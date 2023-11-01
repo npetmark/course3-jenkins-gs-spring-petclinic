@@ -29,7 +29,7 @@ pipeline {
             steps {
                 copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
                 sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
-                docker commit $(basename $(cat /proc/1/cpuset)) petclinic
+                sh 'docker commit $(basename $(cat /proc/1/cpuset)) petclinic'
             }
         }
     }
