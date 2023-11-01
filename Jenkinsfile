@@ -23,10 +23,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/petclinic' 
-                    args ''' 
-                            --rm=false
-                            -p 9000:9000
-                            '''
+                    args '--rm=false -p 9000:9000'
                 }
             }
             steps {
