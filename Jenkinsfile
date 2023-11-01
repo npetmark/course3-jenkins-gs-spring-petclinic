@@ -30,7 +30,7 @@ pipeline {
                 }
             }
             steps {
-                copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: lastSuccessful()
+                copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
                 sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
             }
         }
