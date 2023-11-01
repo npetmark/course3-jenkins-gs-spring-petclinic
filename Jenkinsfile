@@ -20,11 +20,10 @@ pipeline {
         }
 
         stage("deploy") {
-            agent { docker 'nmark/test-dotnet-jenkins' }
-                steps {
-                    sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
-                }
+            steps {
+                sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
             }
+        }
     }
     post {
         always {
