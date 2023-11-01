@@ -23,7 +23,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/jenkins' 
-                    args '-d -p 9000:9000'
+                    args '--rm false -d -p 9000:9000'
                 }
             }
             steps {
