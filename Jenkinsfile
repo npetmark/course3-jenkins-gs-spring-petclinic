@@ -18,6 +18,12 @@ pipeline {
                 jacoco()
             }
         }
+
+        stage("deploy") {
+            steps {
+                sh 'java -Dserver.port 9000 -jar **/*petclinc*.jar
+            }
+        }
     }
     post {
         always {
