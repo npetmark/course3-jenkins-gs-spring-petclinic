@@ -20,7 +20,9 @@ pipeline {
         }
 
         stage("deploy") {
+            agent { label 'Agent' }
             steps {
+                copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: lastSuccessful()
                 sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
             }
         }
