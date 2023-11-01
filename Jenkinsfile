@@ -23,7 +23,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/petclinic' 
-                    args '-d -p 9000:9000 --restart always'
+                    args '-d -p 9000:9000 --rm false --restart always'
                 }
             }
             steps {
