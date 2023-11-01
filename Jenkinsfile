@@ -22,7 +22,7 @@ pipeline {
         stage("deploy") {
             agent { 
                 docker { 
-                    image 'nmark/petclinic' 
+                    image 'nmark/jenkins' 
                     args '-d -p 9000:9000 --rm false --restart always'
                 }
             }
