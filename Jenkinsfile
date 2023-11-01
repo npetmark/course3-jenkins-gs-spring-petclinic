@@ -22,15 +22,13 @@ pipeline {
         stage("deploy") {
             agent { 
                 docker { 
-                    image 'nmark/jenkins' 
-                    args '-p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock'
+                    image 'nmark/petclinic' 
+                    args '-p 9000:9000'
                 }
             }
             steps {
                 copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
-                sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
-                sh 'docker commit $(basename $(cat /proc/1/cpuset)) petclinic'
-                sh 'docker run -d -it petclinic'
+                sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar'
             }
         }
     }
