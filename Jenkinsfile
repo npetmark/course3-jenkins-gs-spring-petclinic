@@ -25,6 +25,7 @@ pipeline {
                 script{
                     withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
                     sh 'docker exec -it petclinic sh'
+                    copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
                     sh "java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &"
                 }
             }
