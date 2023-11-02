@@ -23,7 +23,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script{
-                    withEnv(['BUILD_ID=dontkill']) {
+                    withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
                     sh "java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &"
                 }
             }
