@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'General' }
+    agent any
     
     stages {
         stage("build") {
@@ -22,9 +22,9 @@ pipeline {
 
         stage("deploy") {
             steps {
-                azureWebAppPublish appName: 'petclinicdemo', azureCredentialsId: 'jenkins_authenticate', dockerImageName: '', dockerImageTag: '', dockerRegistryEndpoint: [], filePath: '**/target/*.jar', publishType: 'file', resourceGroup: 'JenkinsRG', slotName: '', sourceDirectory: '', targetDirectory: ''
+                
                 // copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
-                // sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar '
+                    sh 'java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &'
                 // sh 'docker version'
             }
         }
