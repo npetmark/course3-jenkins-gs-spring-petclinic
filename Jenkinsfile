@@ -21,13 +21,15 @@ pipeline {
         }
 
         stage("deploy") {
+            agent { 'label' }
             steps {
-                script{
-                    withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
-                    copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
-                    sh 'docker exec -u petclini'
-                    sh "java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &"
-                }
+                // script{
+                //     withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
+                //     copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(fallbackToLastSuccessful: true), target: './target'
+                //     sh 'docker exec -u petclini'
+                //     sh "java -Dserver.port=9000 -jar **/spring-petclinic-3.1.0-SNAPSHOT.jar &"
+                // }
+                sh 'docker version'
             }
         }
     }
