@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent { label 'General'}
         stages {
                 stage("deploy") {
                     agent { 
