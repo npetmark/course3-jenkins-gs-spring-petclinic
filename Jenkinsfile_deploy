@@ -9,14 +9,21 @@ pipeline {
                         }
                     }
                     steps {
-                        script{
-                            // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
-                            copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', selector: lastSuccessful(), target: './var/jenkins_home/workspace/scm-declarative/target'
-                            sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/scm-declarative/target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
-                            sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
-                        // }
+                        slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+                        copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', selector: lastSuccessful(), target: './var/jenkins_home/workspace/scm-declarative/target'
+                        sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/scm-declarative/target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
+                        sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
                     }
                 }
+            }
+        post {
+            always {
+                emailext body: "${env.BUILD_URL}\n${currentBuild.absoluteUrl}",
+                    to: 'nikolay.markov@technocloudlab.com',
+                    recipientProviders: [previous()], 
+                    subject: "${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+
+                slackSend message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
             }   
         }
-}
+    }
