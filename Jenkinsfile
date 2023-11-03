@@ -24,13 +24,14 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/petclinic'
+                    name  'petclinic-deploy'
                 }
             }
             steps {
                 script{
                     // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
                     copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(${env.BUILD_NUMBER}), target: './target'
-                    sh 'docker exec -u 0 petclinic docker cp ${BUILD_CONTAINER_ID}:./target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
+                    sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
                     sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
                 // }
             }
