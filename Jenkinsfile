@@ -29,8 +29,7 @@ pipeline {
             steps {
                 script{
                     // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
-                    $containerId = sh 'docker ps -q --filter "label=org.jenkinsci.plugins.pipeline.modeldefinition.agent.impl.LabelledDockerAgentTemplate"'
-                    sh 'echo $containerId'
+                    sh 'echo ${Container.id}'
                     // copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(), target: './target'
                     // sh 'docker exec -u 0 petclinic docker cp $containerId:./target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
                     // sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
