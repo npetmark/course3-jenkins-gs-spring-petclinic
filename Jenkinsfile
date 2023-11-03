@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage("build") {
             steps {
@@ -20,23 +20,23 @@ pipeline {
             }
         }
 
-    //     stage("deploy") {
-    //         agent { 
-    //             docker { 
-    //                 image 'nmark/petclinic'
-    //                 args '--name petclinic-deploy'
-    //             }
-    //         }
-    //         steps {
-    //             script{
-    //                 // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
-    //                 copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(allowUpstreamDependencies: true, fallbackToLastSuccessful: true), target: './var/jenkins_home/workspace/scm-declarative/target'
-    //                 sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/scm-declarative/target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
-    //                 sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
-    //             // }
-    //         }
-    //     }
-    // }
+        stage("deploy") {
+            // agent { 
+            //     docker { 
+            //         image 'nmark/petclinic'
+            //         args '--name petclinic-deploy'
+            //     }
+            // }
+            steps {
+                script{
+                    // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
+                    // copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'scm-declarative', selector: upstream(allowUpstreamDependencies: true, fallbackToLastSuccessful: true), target: './var/jenkins_home/workspace/scm-declarative/target'
+                    sh 'docker exec -u 0 petclinic docker cp niksjenkins:./var/jenkins_home/workspace/scm-declarative/target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
+                    sh 'docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &'
+                // }
+            }
+        }
+    }
     }
     post {
         always {
