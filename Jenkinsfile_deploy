@@ -10,7 +10,7 @@ pipeline {
                     }
                     steps {
                         slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
-                        copyArtifacts filter: '**/*', fingerprintArtifacts: true, projectName: 'petclinic-ci' target: '~/'
+                        copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', target: '/target'
                         sh 'sleep 120'
                         sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:/var/jenkins_home/jobs/petclinic-ci/builds/${env.BUILD_NUMBER}/archive/target/spring-petclinic-3.1.0-SNAPSHOT.jar .'
                         sh "docker exec petclinic java -Dserver.port=9000 -jar ./spring-petclinic-3.1.0-SNAPSHOT.jar &"
