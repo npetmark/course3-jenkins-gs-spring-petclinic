@@ -1,6 +1,4 @@
-pipeline {
-    agent { label 'General'}
-
+node ('General') {
     stages {
         stage("build") {
             steps {
