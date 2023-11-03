@@ -24,7 +24,7 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/petclinic'
-                    name  'petclinic-deploy'
+                    args '--name petclinic-deploy'
                 }
             }
             steps {
