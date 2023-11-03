@@ -24,6 +24,8 @@ pipeline {
             agent { 
                 docker { 
                     image 'nmark/petclinic'
+                }
+            }
             steps {
                 script{
                     // withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
