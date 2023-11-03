@@ -1,5 +1,7 @@
-node ('General') {
-    // stages {
+pipeline {
+    agent { label 'General' }
+
+    stages {
         stage("build") {
             steps {
                 slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
@@ -35,7 +37,7 @@ node ('General') {
     //         }
     //     }
     // }
-    // }
+    }
     post {
         always {
             emailext body: "${env.BUILD_URL}\n${currentBuild.absoluteUrl}",

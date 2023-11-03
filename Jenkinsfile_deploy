@@ -1,5 +1,6 @@
-node ('General') {
-        // stages {
+pipeline {
+    agent { label 'General' }
+        stages {
                 stage("deploy") {
                     agent { 
                         docker { 
@@ -24,5 +25,5 @@ node ('General') {
 
                 slackSend message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
             }   
-        // }
+        }
 }
