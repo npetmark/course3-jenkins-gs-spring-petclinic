@@ -26,8 +26,16 @@ pipeline {
                 to: 'nikolay.markov@technocloudlab.com',
                 recipientProviders: [previous()], 
                 subject: "${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
-
-            slackSend message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
         }
+        success {
+            slackSend color: 'good',
+                        message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
+        }
+        failure {
+            slackSend color: 'danger',
+                        message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
+        }
+
+
     }
 }
