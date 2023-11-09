@@ -2,8 +2,10 @@ pipeline {
     agent { label 'General' }
         stages {
                 stage("approve") {
-                    slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL})"
-                    input message: "Approve deployment?", ok: "Yes"
+                    steps {
+                        slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL})"
+                        input message: "Approve deployment?", ok: "Yes"
+                     }
                 }
                 stage("deploy") {
                     parallel {
