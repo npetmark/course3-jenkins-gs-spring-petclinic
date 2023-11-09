@@ -52,13 +52,11 @@ pipeline {
                     subject: "${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
             }
             success {
-                slackSend
-                          color: 'good',
+                slackSend color: 'good',
                           message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
             }
             failure {
-                slackSend
-                          color: 'danger',
+                slackSend color: 'danger',
                           message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
             }
 
