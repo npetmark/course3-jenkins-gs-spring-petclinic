@@ -2,14 +2,14 @@ pipeline {
     agent { label 'General' }
         stages {
                 stage("deploy") {
-                    agent { 
-                        docker { 
-                            image 'nmark/petclinic'
-                            args '--name petclinic-deploy'
-                        }
-                    }
                     parallel {
                         stage('Docker'){
+                            agent { 
+                                docker { 
+                                    image 'nmark/petclinic'
+                                    args '--name petclinic-deploy'
+                                }
+                            }
                             steps {
                                 slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
                                 copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', target: './deploy-petclinic'
