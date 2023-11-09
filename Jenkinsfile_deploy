@@ -8,19 +8,33 @@ pipeline {
                             args '--name petclinic-deploy'
                         }
                     }
-                    steps {
-                        slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
-                        copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', target: './deploy-petclinic'
-                        sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/petclinic-cd/deploy-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar ./'
-                        slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL})"
-                        input message: "Approve deployment?", ok: "Yes"
-                        script { 
-                            try {
-                                sh 'docker exec -u 0 petclinic pkill "java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar"'
-                            } catch (err) {
-                                echo err.getMessage()
-                            } finally {
-                                sh "docker exec petclinic java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar &"
+                    parallel {
+                        stage('Docker'){
+                            steps {
+                                slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+                                copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', target: './deploy-petclinic'
+                                sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/petclinic-cd/deploy-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar ./'
+                                slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL})"
+                                input message: "Approve deployment?", ok: "Yes"
+                                script { 
+                                    try {
+                                        sh 'docker exec -u 0 petclinic pkill "java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar"'
+                                    } catch (err) {
+                                        echo err.getMessage()
+                                    } finally {
+                                        sh "docker exec petclinic java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar &"
+                                    }
+                                }
+                            }
+                        }
+                        stage('Linux') {
+                            steps {
+                                echo "Deploying on Linux"
+                            }
+                        }
+                        stage('Windows') {
+                            steps {
+                                echo "Deploying on Windows"
                             }
                         }
                     }
