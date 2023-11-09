@@ -22,7 +22,7 @@ pipeline {
                                 sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/petclinic-cd/deploy-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar ./'
                                 script { 
                                     try {
-                                        sh 'docker exec -u 0 petclinic pkill "java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar"'
+                                        sh 'docker exec -u 0 petclinic pkill -f "java -Dserver.port=9000 -jar spring-petclinic-3.1.0-SNAPSHOT.jar"'
                                     } catch (err) {
                                         echo err.getMessage()
                                     } finally {
