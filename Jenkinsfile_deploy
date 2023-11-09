@@ -4,7 +4,7 @@ pipeline {
                 stage("Approve") {
                     steps {
                         slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
-                        slackSend color: 'warning' message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Link>)"
+                        slackSend color: 'warning', message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Link>)"
                         input message: "Approve deployment?", ok: "Yes"
                      }
                 }
