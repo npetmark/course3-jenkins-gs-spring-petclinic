@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("build") {
             steps {
-                slackSend channel: '#pectlinic-ci',
+                slackSend channel: '#petclinic-ci',
                           message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
                 sh "./mvnw package"                
             }
