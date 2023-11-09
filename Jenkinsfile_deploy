@@ -3,7 +3,8 @@ pipeline {
         stages {
                 stage("Approve") {
                     steps {
-                        slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL})"
+                        slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+                        slackSend message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (${env.JOB_URL}|Link)"
                         input message: "Approve deployment?", ok: "Yes"
                      }
                 }
@@ -17,7 +18,6 @@ pipeline {
                                 }
                             }
                             steps {
-                                slackSend message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
                                 copyArtifacts filter: '**/*.jar', fingerprintArtifacts: true, projectName: 'petclinic-ci', target: './deploy-petclinic'
                                 sh 'docker exec -u 0 petclinic docker cp petclinic-deploy:./var/jenkins_home/workspace/petclinic-cd/deploy-petclinic/target/spring-petclinic-3.1.0-SNAPSHOT.jar ./'
                                 script { 
