@@ -3,8 +3,8 @@ pipeline {
         stages {
                 stage("Approve") {
                     steps {
-                        slackSend channel: 'petclinic-cd', message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
-                        slackSend channel: 'petclinic-cd', color: 'warning', message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Link>)"
+                        slackSend channel: '#petclinic-cd', message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
+                        slackSend channel: '#petclinic-cd', color: 'warning', message: "Please approve the deployment of ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Link>)"
                         input message: "Approve deployment?", ok: "Yes"
                      }
                 }
@@ -57,7 +57,7 @@ pipeline {
                             message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
             }
             failure {
-                slackSend   channel: 'petclinic-cd',
+                slackSend   channel: '#petclinic-cd',
                             color: 'danger',
                             message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
             }

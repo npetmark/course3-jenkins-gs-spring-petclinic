@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("build") {
             steps {
-                slackSend channel: 'pectlinic-ci',
+                slackSend channel: '#pectlinic-ci',
                           message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)"
                 sh "./mvnw package"                
             }
@@ -29,12 +29,12 @@ pipeline {
                 subject: "${currentBuild.currentResult}: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
         }
         success {
-            slackSend   channel: 'petclinic-ci',
+            slackSend   channel: '#petclinic-ci',
                         color: 'good',
                         message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
         }
         failure {
-            slackSend   channel: 'petclinic-ci', 
+            slackSend   channel: '#petclinic-ci', 
                         color: 'danger',
                         message: "Build Completed - ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link>)."
         }
