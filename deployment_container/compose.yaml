@@ -1,0 +1,9 @@
+services:
+  jenkins:
+    container_name: petclinic
+    privileged: true
+    image: nmark/petclinic:latest # :latest (weekly), :lts, :jdk17, :jdk11, :lts-jdk17, etc
+    ports:
+      - "127.0.0.1:9000:9000" # drop 127.0.0.1: if you want remote access to Petclinic
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
